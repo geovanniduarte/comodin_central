@@ -1,18 +1,16 @@
 package co.com.comodin.db;
 
-import com.co.mysevenminds.datos.DBAdapter;
-import com.co.mysevenminds.datos.DBAdapter.DatabaseHelper;
-
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
 public class db_adapter {
 	
-	private static final String BASEDATOS_NOMBRE = "<Name>";
+	private static final String BASEDATOS_NOMBRE = "DATABASE_NAME";
 
-	private static final int BASEDATOS_VERSION = <Number>;
+	private static final int BASEDATOS_VERSION = 1;
 
 	private DatabaseHelper mDbHelper;
 
@@ -20,7 +18,7 @@ public class db_adapter {
 
 	private final Context mCtx;
 	
-	private static final String TABLE = "create table <Table Name> (_id integer primary key, columnName text)";
+	private static final String TABLE = "create table Table (_id integer primary key, columnName1 text, columnName2 text)";
 	
 	/**
 	 * Constructor - almacena el contexto que permite abrir/crear la base de datos.
@@ -39,7 +37,7 @@ public class db_adapter {
 	 *
 	 * @return this
 	 */
-	public DBAdapter open() {
+	public db_adapter open() {
         try {
 			if (mDbHelper == null) {
 				//mDbHelper = new DatabaseHelper(mCtx);
@@ -53,6 +51,8 @@ public class db_adapter {
 		}
         return this;
     }
+	
+	
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		
@@ -93,5 +93,19 @@ public class db_adapter {
 		}
 		
 		
+	}
+	
+	/**
+	 * Ejecuta un query.
+	 * @param query Query
+	 * @param parametros par‡metros
+	 * @return Cursor con datos de la consulta
+	 */
+	public Cursor ejecutarQuerySelect(String query, String[] parametros) {
+		Cursor mCursor = mDb.rawQuery(query, parametros);
+		if (mCursor != null) {
+			mCursor.moveToFirst();
+		}
+		return mCursor;
 	}
 }
